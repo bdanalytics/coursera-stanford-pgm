@@ -5,7 +5,7 @@
 %   then the function produces a matrix of assignments, one assignment 
 %   per row.
 %
-%   See also AssignmentToIndex.m and FactorTutorial.m
+%   See also AssignmentToIndex.m and SampleFactors.m
 
 function A = IndexToAssignment(I, D)
 

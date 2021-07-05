@@ -1,64 +1,89 @@
 function submit(part)
   addpath('./lib');
 
-  conf.assignmentKey = 'jk3STQNfEeadkApJXdJa6Q';
-  conf.itemName = 'Simple BN Knowledge Engineering';
+  conf.assignmentKey = 'haijvkP8EeaOwRI5GO98Xw';
+  conf.itemName = 'BNs for Genetic Inheritance';
 
   conf.partArrays = { ...
     { ...
-      'COq9M', ...
-      { 'Credit_net.net' }, ...
-      'Constructing a Credit Network', ...
+      '6qJ5F', ...
+      { 'phenotypeGivenGenotypeMendelianFactor.m' }, ...
+      'phenotypeGivenGenotypeMendelianFactor', ...
     }, ...
     { ...
-      '1AayO', ...
-      { 'FactorProduct.m' }, ...
-      'Factor Network', ...
+      'YW7hB', ...
+      { 'phenotypeGivenGenotypeMendelianFactor.m' }, ...
+      'phenotypeGivenGenotypeMendelianFactor (Test)', ...
     }, ...
     { ...
-      'bsUeZ', ...
-      { 'FactorProduct.m' }, ...
-      'Factor Network (Test)', ...
+      '4SCHR', ...
+      { 'phenotypeGivenGenotypeFactor.m' }, ...
+      'phenotypeGivenGenotypeFactor', ...
     }, ...
     { ...
-      'Y0uy4', ...
-      { 'FactorMarginalization.m' }, ...
-      'Factor Marginalization', ...
+      'dMfG8', ...
+      { 'phenotypeGivenGenotypeFactor.m' }, ...
+      'phenotypeGivenGenotypeFactor (Test)', ...
     }, ...
     { ...
-      '5nfbi', ...
-      { 'FactorMarginalization.m' }, ...
-      'Factor Marginalization (Test)', ...
+      'sVijF', ...
+      { 'genotypeGivenAlleleFreqsFactor.m' }, ...
+      'genotypeGivenAlleleFreqsFactor', ...
     }, ...
     { ...
-      'VNVAv', ...
-      { 'ObserveEvidence.m' }, ...
-      'Observing Evidence', ...
+      '7ccHc', ...
+      { 'genotypeGivenAlleleFreqsFactor.m' }, ...
+      'genotypeGivenAlleleFreqsFactor (Test)', ...
     }, ...
     { ...
-      'c8RCS', ...
-      { 'ObserveEvidence.m' }, ...
-      'Observing Evidence (Test)', ...
+      'YTHBY', ...
+      { 'genotypeGivenParentsGenotypesFactor.m' }, ...
+      'genotypeGivenParentsGenotypesFactor', ...
     }, ...
     { ...
-      'rFh8a', ...
-      { 'ComputeJointDistribution.m' }, ...
-      'Computing the Joint Distribution', ...
+      'mFn3B', ...
+      { 'genotypeGivenParentsGenotypesFactor.m' }, ...
+      'genotypeGivenParentsGenotypesFactor (Test)', ...
     }, ...
     { ...
-      'ThtGy', ...
-      { 'ComputeJointDistribution.m' }, ...
-      'Computing the Joint Distribution (Test)', ...
+      'wCUvg', ...
+      { 'constructGeneticNetwork.m' }, ...
+      'constructGeneticNetwork', ...
     }, ...
     { ...
-      'lM96X', ...
-      { 'ComputeMarginal.m' }, ...
-      'Computing Marginals', ...
+      'wyMoY', ...
+      { 'constructGeneticNetwork.m' }, ...
+      'constructGeneticNetwork (Test)', ...
     }, ...
     { ...
-      'gde9N', ...
-      { 'ComputeMarginal.m' }, ...
-      'Computing Marginals (Test)', ...
+      'flSZ2', ...
+      { 'phenotypeGivenCopiesFactor.m' }, ...
+      'phenotypeGivenCopiesFactor', ...
+    }, ...
+    { ...
+      'GfmuH', ...
+      { 'phenotypeGivenCopiesFactor.m' }, ...
+      'phenotypeGivenCopiesFactor (Test)', ...
+    }, ...
+    { ...
+      'JmkmK', ...
+      { 'constructDecoupledGeneticNetwork.m' }, ...
+      'constructDecoupledGeneticNetwork', ...
+    }, ...
+    { ...
+      'J0R6g', ...
+      { 'constructDecoupledGeneticNetwork.m' }, ...
+      'constructDecoupledGeneticNetwork (Test)', ...
+    }, ...
+    { ...
+      'dpFFP', ...
+      { 'constructSigmoidPhenotypeFactor.m' }, ...
+      'constructSigmoidPhenotypeFactor', ...
+    }, ...
+    { ...
+      'nBdS8', ...
+      { 'constructSigmoidPhenotypeFactor.m' }, ...
+      'constructSigmoidPhenotypeFactor (Test)', ...
     }, ...
   };
 
@@ -67,109 +92,136 @@ function submit(part)
 
 end
 
-function out = output(partIdx)
+function out = output(partIdx, auxstring)
 
-  load submit_input;
   if partIdx == 1
-    [F, names, assignments] = ConvertNetwork('Credit_net.net');
-    [F, names, assignments] = RelabelVars(F, names, assignments);
-    if (ValidateNetwork(F, names, assignments))      
-      out = SerializeFactorsFg(F);
-    else
-      out = '';
-    end
+    isDominant = 1;
+    genotypeVar = 1;
+    phenotypeVar = 3;
+    pggmf(1) = phenotypeGivenGenotypeMendelianFactor(isDominant, genotypeVar, phenotypeVar);
+    pggmf(1) = SortFactorLaterVars(pggmf(1));
+    out = SerializeFactorsFg(pggmf);
   elseif partIdx == 2
-    fp = FactorProduct(PART2.SAMPLEINPUT{:});
-    out = SerializeFactorsFg(fp);
+    isDominant = 0;
+    genotypeVar = 1;
+    phenotypeVar = 3;
+    pggmf(1) = phenotypeGivenGenotypeMendelianFactor(isDominant, genotypeVar, phenotypeVar);
+    pggmf(1) = SortFactorLaterVars(pggmf(1));
+    out = SerializeFactorsFg(pggmf);
   elseif partIdx == 3
-    fp = [FactorProduct(PART2.INPUT1{:}), FactorProduct(PART2.INPUT2{:})];
-    out = SerializeFactorsFg(fp);
+    alphaList = [0.8; 0.6; 0.1];
+    genotypeVar = 1;
+    phenotypeVar = 3;
+    pggf(1) = phenotypeGivenGenotypeFactor(alphaList, genotypeVar, phenotypeVar);
+    pggf(1) = SortFactorLaterVars(pggf(1));
+    out = SerializeFactorsFg(pggf);
   elseif partIdx == 4
-    fm = [FactorMarginalization(PART3.SAMPLEINPUT{:})];
-    out = SerializeFactorsFg(fm);
+    alphaList = [0.2; 0.5; 0.9];
+    genotypeVar = 1;
+    phenotypeVar = 3;
+    pggf(1) = phenotypeGivenGenotypeFactor(alphaList, genotypeVar, phenotypeVar);
+    pggf(1) = SortFactorLaterVars(pggf(1));
+    out = SerializeFactorsFg(pggf);
   elseif partIdx == 5
-    fm = [FactorMarginalization(PART3.INPUT1{:}), FactorMarginalization(PART3.INPUT2{:})];  
-    out = SerializeFactorsFg(fm);
+    alleleFreqs = [0.1; 0.9];
+    genotypeVar = 1;
+    ggaff(1) = genotypeGivenAlleleFreqsFactor(alleleFreqs, genotypeVar);
+    out = SerializeFactorsFg(ggaff);
   elseif partIdx == 6
-    oe = [ObserveEvidence(PART4.SAMPLEINPUT{:})];
-    out = SerializeFactorsFg(oe);
+    alleleFreqs = [0.98; 0.02];
+    genotypeVar = 1;
+    ggaff(1) = genotypeGivenAlleleFreqsFactor(alleleFreqs, genotypeVar);
+    out = SerializeFactorsFg(ggaff);
   elseif partIdx == 7
-    oe = [ObserveEvidence(PART4.INPUT1{:})];
-    out = SerializeFactorsFg(oe);
+    alleleList = {'F', 'f'};
+    genotypeVarChild = 3;
+    genotypeVarParentOne = 1;
+    genotypeVarParentTwo = 2;
+    ggpgf(1) = genotypeGivenParentsGenotypesFactor(length(alleleList), genotypeVarChild, genotypeVarParentOne, genotypeVarParentTwo);
+    ggpgf(1) = SortFactorLaterVars(ggpgf(1));
+    out = SerializeFactorsFg(ggpgf);
   elseif partIdx == 8
-    jd = [ComputeJointDistribution(PART5.SAMPLEINPUT{:})];
-    out = SerializeFactorsFg(jd);
+    alleleList = {'A', 'a', 'n'};
+    genotypeVarChild = 3;
+    genotypeVarParentOne = 1;
+    genotypeVarParentTwo = 2;
+    ggpgf(1) = genotypeGivenParentsGenotypesFactor(length(alleleList), genotypeVarChild, genotypeVarParentOne, genotypeVarParentTwo);
+    ggpgf(1) = SortFactorLaterVars(ggpgf(1));
+    out = SerializeFactorsFg(ggpgf);
   elseif partIdx == 9
-    jd = [ComputeJointDistribution(PART5.INPUT1{:})];
-    out = SerializeFactorsFg(jd);
-  elseif partIdx == 10
-    cm = [ComputeMarginal(PART6.SAMPLEINPUT{:})];
-    out = SerializeFactorsFg(cm);
-  elseif partIdx == 11
-    cm = [ComputeMarginal(PART6.INPUT1{:}), ComputeMarginal(PART6.INPUT2{:}), ComputeMarginal(PART6.INPUT3{:}), ComputeMarginal(PART6.INPUT4{:})];
-    out = SerializeFactorsFg(cm);
-  end 
-end
-
-function ok = ValidateNetwork(F, names, assignments)
-  % Check number of variables in network
-  assert(numel(names) == 8, sprintf('Error: your network should have 8 variables but it only has %d. Did you delete some variables?', numel(names)));
-
-  % Check number of CPDs in network
-  % If this happens, it's most likely a malformed .net file, or else it is
-  % a bug in ConvertNetwork.m
-  assert(numel(F) == 8, sprintf('Error: your network should have 8 CPDs but it only has %d.', numel(F)));   
-  
-  % Check that the assignment of variables is the same as in the original
-  valNames = cell(8, 1);
-  valNames{1} = {'Low','High'};
-  valNames{2} = {'High','Medium','Low'};
-  valNames{3} = {'Positive','Negative'};
-  valNames{4} = {'High','Medium','Low'};
-  valNames{5} = {'Excellent','Acceptable','Unacceptable'};
-  valNames{6} = {'Promising','Not_promising'};
-  valNames{7} = {'Reliable','Unreliable'};
-  valNames{8} = {'Between16and21','Between22and64','Over65'};
-  
-  for i = 1:numel(valNames)    
-    assert(all(strcmp(valNames{i}, assignments{i})), ...
-      sprintf('Error: variable values/value ordering for variable %s does not match the original. Did you change the order/name of some variable values?', names{i}));
-  end
-  
-  ok = true;
-end
-
-% Relabel variable ids according to the grader ordering
-function [newF, newNames, newAssignments] = RelabelVars(F, names, assignments)
-  varNames = cell(8, 1);
-  varNames{1} = 'DebtIncomeRatio';
-  varNames{2} = 'Assets';
-  varNames{3} = 'CreditWorthiness';
-  varNames{4} = 'Income';
-  varNames{5} = 'PaymentHistory';
-  varNames{6} = 'FutureIncome';
-  varNames{7} = 'Reliability';
-  varNames{8} = 'Age';
-
-  newToOrig = zeros(8, 1);
-  origToNew = zeros(8, 1);
-  for i = 1:8
-    result = find(strcmp(varNames{i}, names), 1);
-    if (isempty(result)) % no match!
-      error('Variable %s not found in network! Did you change the variable names/identifiers?', varNames{i});
-    else
-      newToOrig(result) = i;
-      origToNew(i) = result;
+    alleleFreqs = [0.1; 0.9];
+    alphaList = [0.8; 0.6; 0.1];
+    pedigree = struct('parents', [0,0;1,3;0,0;1,3;2,6;0,0;2,6;4,9;0,0]);
+    pedigree.names = {'Ira','James','Robin','Eva','Jason','Rene','Benjamin','Sandra','Aaron'};
+    cgn = constructGeneticNetwork(pedigree, alleleFreqs, alphaList);
+    for i = 1:length(cgn)
+        cgn(i) = SortFactorLaterVars(cgn(i));
     end
-  end
-  
-  newNames = names(origToNew(:));
-  newAssignments = assignments(origToNew(:));
-  
-  % relabel the vars
-  newF = F;
-  for i = 1:numel(F)
-    newF(i).var = newToOrig(F(i).var);
+    out = SerializeFactorsFg(sortStruct(cgn));
+  elseif partIdx == 10
+    alleleFreqs = [0.1; 0.9];
+    alphaList = [0.8; 0.6; 0.1];
+    pedigree = struct('parents', [0,0;0,0;2,1;0,0;2,1;0,0;0,0;3,4;5,7;5,6]);
+  pedigree.names = {'Alan','Vivian','Alice','Larry','Beth','Henry','Leon','Frank','Amy', 'Martin'};
+    cgn = constructGeneticNetwork(pedigree, alleleFreqs, alphaList);
+    for i = 1:length(cgn)
+        cgn(i) = SortFactorLaterVars(cgn(i));
+    end
+    out = SerializeFactorsFg(sortStruct(cgn));
+  elseif partIdx == 11
+    alphaListThree = [0.8; 0.6; 0.1; 0.5; 0.05; 0.01];
+    phenotypeVar = 3;
+    genotypeVarMotherCopy = 1;
+    genotypeVarFatherCopy = 2;
+    numAlleles = 3;
+    pgpaf(1) = phenotypeGivenCopiesFactor(alphaListThree, numAlleles, genotypeVarMotherCopy, genotypeVarFatherCopy, phenotypeVar);
+    pgpaf(1) = SortFactorLaterVars(pgpaf(1));
+    out = SerializeFactorsFg(pgpaf);
+  elseif partIdx == 12
+    alphaListThree = [0.001; 0.009; 0.3; 0.2; 0.75; 0.95];
+    phenotypeVar = 3;
+    genotypeVarMotherCopy = 1;
+    genotypeVarFatherCopy = 2;
+    numAlleles = 3;
+    pgpaf(1) = phenotypeGivenCopiesFactor(alphaListThree, numAlleles, genotypeVarMotherCopy, genotypeVarFatherCopy, phenotypeVar);
+    pgpaf(1) = SortFactorLaterVars(pgpaf(1));
+    out = SerializeFactorsFg(pgpaf);
+  elseif partIdx == 13
+    pedigree = struct('parents', [0,0;1,3;0,0;1,3;2,6;0,0;2,6;4,9;0,0]);
+    pedigree.names = {'Ira','James','Robin','Eva','Jason','Rene','Benjamin','Sandra','Aaron'};
+    alphaListThree = [0.8; 0.6; 0.1; 0.5; 0.05; 0.01];
+    alleleFreqsThree = [0.1; 0.7; 0.2];
+    cdgn = constructDecoupledGeneticNetwork(pedigree, alleleFreqsThree, alphaListThree);
+    for i = 1:length(cdgn)
+        cdgn(i) = SortFactorLaterVars(cdgn(i));
+    end
+    out = SerializeFactorsFg(sortStruct(cdgn));
+  elseif partIdx == 14
+    pedigree = struct('parents', [0,0;0,0;2,1;0,0;2,1;0,0;0,0;3,4;5,7;5,6]);
+  pedigree.names = {'Alan','Vivian','Alice','Larry','Beth','Henry','Leon','Frank','Amy', 'Martin'};
+    alphaListThree = [0.8; 0.6; 0.1; 0.5; 0.05; 0.01];
+    alleleFreqsThree = [0.1; 0.7; 0.2];
+    cdgn = constructDecoupledGeneticNetwork(pedigree, alleleFreqsThree, alphaListThree);
+    for i = 1:length(cdgn)
+        cdgn(i) = SortFactorLaterVars(cdgn(i));
+    end
+    out = SerializeFactorsFg(sortStruct(cdgn));
+  elseif partIdx == 15
+    alleleWeights = {[3, -3], [0.9, -0.8]};
+    phenotypeVar = 3;
+    geneCopyVarParentOneList = [1; 2];
+    geneCopyVarParentTwoList = [4; 5];
+    cspf(1) = constructSigmoidPhenotypeFactor(alleleWeights, geneCopyVarParentOneList, geneCopyVarParentTwoList, phenotypeVar);
+    cspf(1) = SortFactorLaterVars(cspf(1));
+    out = SerializeFactorsFg(cspf);
+  elseif partIdx == 16
+    alleleWeights = {[0.01, -.2], [1, -.5]};
+    phenotypeVar = 3;
+    geneCopyVarParentOneList = [1; 2];
+    geneCopyVarParentTwoList = [4; 5];
+    cspf(1) = constructSigmoidPhenotypeFactor(alleleWeights, geneCopyVarParentOneList, geneCopyVarParentTwoList, phenotypeVar);
+    cspf(1) = SortFactorLaterVars(cspf(1));
+    out = SerializeFactorsFg(cspf);
   end
 end
 
@@ -206,5 +258,72 @@ for i = 1:numel(F)
 end
 
 out = sprintf('%s', lines{:});
+
+end
+
+function out = SerializePedigree(pedigree)
+% SerializePedigree Serializes a pedigree into a text string.
+
+numPeople = numel(pedigree.names);
+
+lines = cell(2*numPeople + 1, 1);
+
+lines{1} = sprintf('%d\n', numPeople);
+lineIdx = 2;
+for i = 1:numPeople
+  lines{lineIdx} = sprintf('%s\n', pedigree.names{i});
+  lineIdx = lineIdx + 1;
+end
+
+for i = 1:numPeople
+  lines{lineIdx} = sprintf('%d %d\n', pedigree.parents(i, 1), pedigree.parents(i, 2));
+  lineIdx = lineIdx + 1;
+end
+
+out = sprintf('%s', lines{:});
+end
+
+function G = SortFactorLaterVars(F)
+% SortFactorLaterVars Returns the input factor with a sorted variable
+% ordering but leaves the first variable alone.
+%   
+% SortFactorLaterVars(F) returns a new factor that contains exactly the same
+% variables and values but in which the variables are ordered differently
+% (the ordering is as specified in the .var field). Specifically, the
+% returned factor will have its first variable  ordered in ascending order.
+%
+% For instance, if F.var = [3 1 2], and G = SortFactorVars(F), tnen 
+% G.var = [1 2 3], and G.card, G.val will have been appropriately reordered
+% (from F.card and F.val) with respect to this sorted variable ordering.
+%
+
+if (numel(F.var) > 1)
+  laterVars = F.var(2:end);
+  [slVars, lorder] = sort(laterVars);
+  G.var = [F.var(1) slVars];
+  
+  order = [1 (lorder+1)];
+  
+  G.card = F.card(order);  
+  G.val = zeros(numel(F.val), 1); 
+
+  assignmentsInF = IndexToAssignment(1:numel(F.val), F.card);
+  assignmentsInG = assignmentsInF(:, order);
+  G.val(AssignmentToIndex(assignmentsInG, G.card)) = F.val;
+  
+else % nothing to do
+  G = F;
+end
+
+end
+
+function sListSorted = sortStruct(sList)
+
+for i = 1 : length(sList)
+  S{i} = sprintf('%d%d%f', sList(i).var, sList(i).card, sList(i).val);  
+end
+
+[S I] = sort(S);
+sListSorted = sList(I);
 
 end

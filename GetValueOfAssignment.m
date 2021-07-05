@@ -7,7 +7,7 @@
 %   v = GetValueOfAssignment(F, A, VO) gets the value of a variable assignment,
 %   A, in factor F. The order of the variables in A are given by the vector VO.
 %
-%   See also SetValueOfAssignment.m and FactorTutorial.m
+%   See also SetValueOfAssignment.m and SampleFactors.m
 
 function v = GetValueOfAssignment(F, A, VO)
 

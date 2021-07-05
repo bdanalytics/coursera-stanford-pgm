@@ -14,7 +14,7 @@
 %   reassign F to the result of SetValueOfAssignment in the code snippets 
 %   shown above.
 %
-%   See also GetValueOfAssignment.m and FactorTutorial.m
+%   See also GetValueOfAssignment.m and SampleFactors.m
 
 function F = SetValueOfAssignment(F, A, v, VO)
 
